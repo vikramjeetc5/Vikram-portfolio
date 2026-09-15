@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikramjeet Chawla — Software Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bg: #0a0f1a;
+    --panel: #0f1626;
+    --border: #223049;
+    --text: #edf1f7;
+    --muted: #8d9bb3;
+    --faint: #5c6a84;
+    --gold: #c9a544;
+    --gold-soft: rgba(201,165,68,.14);
+    --teal: #45b8ac;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', Arial, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  ::selection{ background:var(--gold-soft); color:var(--text); }
+
+  a{ color:inherit; }
+
+  :focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    width:90%;
+    max-width:880px;
+    margin:0 auto;
+  }
+
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+
+  section{ padding:96px 0; border-top:1px solid var(--border); }
+  section:first-of-type{ border-top:none; }
+
+  /* ============ HEADER ============ */
+
+  header{
+    padding:28px 0;
+  }
+  header .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .mark{
+    font-family:'Fraunces', serif;
+    font-size:18px;
+  }
+  header nav{
+    display:flex;
+    gap:28px;
+    font-size:14px;
+    color:var(--muted);
+  }
+  header nav a{
+    text-decoration:none;
+    position:relative;
+    padding-bottom:2px;
+  }
+  header nav a::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:1px;
+    background:var(--teal);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .25s ease;
+  }
+  header nav a:hover::after,
+  header nav a:focus-visible::after{ transform:scaleX(1); }
+
+  /* ============ HERO ============ */
+
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:48px;
+    align-items:center;
+    padding-top:40px;
+    padding-bottom:40px;
+  }
+
+  .hero .role{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+
+  .hero h1{
+    font-size:clamp(40px,6vw,64px);
+    line-height:1.05;
+    margin-bottom:20px;
+  }
+
+  .hero p{
+    color:var(--muted);
+    max-width:46ch;
+    font-size:17px;
+  }
+
+  .cta-row{
+    display:flex;
+    gap:14px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-block;
+    padding:12px 22px;
+    font-size:14px;
+    text-decoration:none;
+    border-radius:2px;
+    transition:border-color .2s ease, color .2s ease, background .2s ease;
+  }
+  .btn-primary{
+    background:var(--gold);
+    color:#171207;
+    font-weight:500;
+  }
+  .btn-primary:hover{ background:#dbb659; }
+  .btn-secondary{
+    border:1px solid var(--border);
+    color:var(--text);
+  }
+  .btn-secondary:hover{ border-color:var(--teal); color:var(--teal); }
+
+  /* hero graphic */
+  .seal-wrap{ display:flex; justify-content:center; }
+  .seal-wrap svg{ width:100%; max-width:260px; height:auto; }
+
+  .draw path, .draw circle, .draw polyline{
+    stroke-dasharray:1;
+    stroke-dashoffset:1;
+    animation:draw 1.1s ease forwards;
+  }
+  .stamp{
+    transform-origin:center;
+    opacity:0;
+    animation:stamp .5s ease .9s forwards;
+  }
+
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes stamp{
+    from{ opacity:0; transform:scale(.6) rotate(-8deg); }
+    to{ opacity:1; transform:scale(1) rotate(-8deg); }
+  }
+
+  /* ============ SCROLL PROGRESS ============ */
+
+  .progress-rail{
+    position:fixed;
+    left:0; top:0; bottom:0;
+    width:3px;
+    background:var(--border);
+    z-index:50;
+  }
+  .progress-fill{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:linear-gradient(180deg, var(--gold), var(--teal));
+    transform:scaleY(0);
+    transform-origin:top;
+  }
+
+  /* ============ REVEAL ON SCROLL ============ */
+
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  .ledger-wrap tr{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .ledger-wrap.in-view tr{ opacity:1; transform:none; }
+  .ledger-wrap.in-view tr:nth-child(2){ transition-delay:.1s; }
+  .ledger-wrap.in-view tr:nth-child(3){ transition-delay:.2s; }
+  .ledger-wrap.in-view tr:nth-child(4){ transition-delay:.3s; }
+
+  .contact-links a{
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .contact-links.in-view a{ opacity:1; transform:none; }
+  .contact-links.in-view a:nth-child(2){ transition-delay:.1s; }
+  .contact-links.in-view a:nth-child(3){ transition-delay:.2s; }
+
+  .dossier .file-col{
+    opacity:0;
+    transform:translateX(-16px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .dossier h3, .dossier p.desc, .dossier p.impact{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .dossier.in-view .file-col{ opacity:1; transform:none; }
+  .dossier.in-view h3{ opacity:1; transform:none; transition-delay:.08s; }
+  .dossier.in-view p.desc{ opacity:1; transform:none; transition-delay:.16s; }
+  .dossier.in-view p.impact{ opacity:1; transform:none; transition-delay:.24s; }
+
+  .dossier .tag{
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .dossier.in-view .tag{ opacity:1; transform:none; }
+  .dossier.in-view .tag:nth-child(1){ transition-delay:.32s; }
+  .dossier.in-view .tag:nth-child(2){ transition-delay:.38s; }
+  .dossier.in-view .tag:nth-child(3){ transition-delay:.44s; }
+  .dossier.in-view .tag:nth-child(4){ transition-delay:.5s; }
+
+  .seal-wrap{ will-change:transform; }
+
+  /* ============ ABOUT ============ */
+
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:56px;
+  }
+
+  h2.section-title{
+    font-size:32px;
+    margin-bottom:28px;
+  }
+
+  .about-grid p{ color:var(--muted); max-width:52ch; }
+
+  table.ledger{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  table.ledger th{
+    text-align:left;
+    font-weight:500;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--faint);
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+  }
+  table.ledger td{
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  table.ledger td:first-child{
+    color:var(--text);
+    width:38%;
+  }
+  table.ledger td:last-child{ color:var(--muted); }
+
+  /* ============ WORK ============ */
+
+  .dossier{
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:32px;
+    padding:36px 0;
+    border-top:1px solid var(--border);
+  }
+  .dossier:last-child{ padding-bottom:0; }
+
+  .file-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--faint);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .file-no{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    color:var(--gold);
+    margin-top:4px;
+  }
+  .file-loc{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:14px;
+  }
+
+  .dossier h3{
+    font-size:22px;
+    margin-bottom:10px;
+  }
+  .dossier p.desc{
+    color:var(--muted);
+    max-width:60ch;
+    margin-bottom:14px;
+  }
+  .dossier p.impact{
+    color:var(--faint);
+    font-style:italic;
+    font-size:14px;
+    margin-bottom:16px;
+  }
+
+  .tags{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    padding:4px 10px;
+    border:1px solid var(--border);
+    border-radius:2px;
+    color:var(--muted);
+  }
+
+  /* ============ CONTACT ============ */
+
+  .contact p{ color:var(--muted); max-width:50ch; margin-bottom:28px; }
+
+  .contact-links{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .contact-links a{
+    font-size:18px;
+    text-decoration:none;
+    width:fit-content;
+    border-bottom:1px solid var(--border);
+    padding-bottom:2px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .contact-links a:hover{ border-color:var(--teal); color:var(--teal); }
+
+  footer{
+    padding:32px 0 60px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--faint);
+  }
+
+  /* ============ MOBILE ============ */
+
+  @media (max-width:760px){
+    section{ padding:64px 0; }
+    .hero .wrap{ grid-template-columns:1fr; padding-top:20px; }
+    .seal-wrap{ order:-1; max-width:160px; margin:0 auto 12px; }
+    .about-grid{ grid-template-columns:1fr; gap:36px; }
+    .dossier{ grid-template-columns:1fr; gap:10px; }
+    .file-loc{ margin-top:4px; }
+    header nav{ gap:16px; font-size:13px; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    .draw path, .draw circle, .draw polyline, .stamp{
+      animation:none !important;
+      stroke-dashoffset:0 !important;
+      opacity:1 !important;
+    }
+    .reveal, .reveal.in-view,
+    .ledger-wrap tr, .contact-links a,
+    .dossier .file-col, .dossier h3, .dossier p.desc, .dossier p.impact, .dossier .tag{
+      opacity:1 !important;
+      transform:none !important;
+    }
+    .seal-wrap{ transform:none !important; }
+    *{ transition:none !important; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="progress-rail" aria-hidden="true"><div class="progress-fill"></div></div>
+
+<header>
+  <div class="wrap">
+    <div class="mark">Vikramjeet Chawla</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="role">SOFTWARE DEVELOPER</div>
+        <h1>I build the systems<br>governments run on.</h1>
+        <p>Public-facing platforms that let citizens file applications and download certificates without visiting an office, and internal tools that keep an organization's day-to-day work moving.</p>
+        <div class="cta-row">
+          <a href="#work" class="btn btn-primary">View my work</a>
+          <a href="#contact" class="btn btn-secondary">Get in touch</a>
+        </div>
+      </div>
+      <div class="seal-wrap">
+        <svg viewBox="0 0 200 220" class="draw" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="130" height="170" rx="3" pathLength="1" stroke="#8d9bb3" stroke-width="1.5" style="animation-delay:0s"/>
+          <polyline points="38,45 122,45" pathLength="1" stroke="#8d9bb3" stroke-width="1.5" style="animation-delay:.15s"/>
+          <polyline points="38,64 122,64" pathLength="1" stroke="#8d9bb3" stroke-width="1.5" style="animation-delay:.25s"/>
+          <polyline points="38,83 100,83" pathLength="1" stroke="#8d9bb3" stroke-width="1.5" style="animation-delay:.35s"/>
+          <polyline points="38,112 122,112" pathLength="1" stroke="#5c6a84" stroke-width="1.5" style="animation-delay:.45s"/>
+          <polyline points="38,131 122,131" pathLength="1" stroke="#5c6a84" stroke-width="1.5" style="animation-delay:.55s"/>
+          <polyline points="38,150 90,150" pathLength="1" stroke="#5c6a84" stroke-width="1.5" style="animation-delay:.65s"/>
+          <g class="stamp">
+            <circle cx="150" cy="150" r="38" fill="#0a0f1a" stroke="#c9a544" stroke-width="2"/>
+            <circle cx="150" cy="150" r="30" stroke="#c9a544" stroke-width="1"/>
+            <polyline points="134,150 146,162 168,136" stroke="#c9a544" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <h2 class="section-title">About</h2>
+        <p>I work across the JavaScript ecosystem — Node.js on the backend, MongoDB and SQL for data, and integrations with Meta's APIs to reach people where they already are. Most of my work so far has gone into software that governments and companies actually run their operations on, not demo projects.</p>
+      </div>
+      <div>
+        <table class="ledger ledger-wrap reveal">
+          <tr><th>Layer</th><th>Tools</th></tr>
+          <tr><td>Runtime &amp; language</td><td>JavaScript, Node.js</td></tr>
+          <tr><td>Data</td><td>MongoDB, SQL</td></tr>
+          <tr><td>Integrations</td><td>Meta APIs</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <h2 class="section-title">Selected work</h2>
+
+      <div class="dossier">
+        <div>
+          <div class="file-label">File</div>
+          <div class="file-no">RJ-GC-01</div>
+          <div class="file-loc">Rajasthan, India<br>[add year]</div>
+        </div>
+        <div>
+          <h3>Public services chatbot for the Rajasthan Government</h3>
+          <p class="desc">A citizen-facing chatbot that lets people fill out government service applications and download official certificates without visiting an office. Built and shipped as a live public service.</p>
+          <p class="impact">— add real numbers here: applications processed, certificates issued, active users</p>
+          <div class="tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Meta APIs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dossier">
+        <div>
+          <div class="file-label">File</div>
+          <div class="file-no">CG-GC-01</div>
+          <div class="file-loc">Chhattisgarh, India<br>[add year]</div>
+        </div>
+        <div>
+          <h3>Public services chatbot for the Chhattisgarh Government</h3>
+          <p class="desc">Adapted and extended the same platform for Chhattisgarh's public services — the same application-filling and certificate-download flow, rebuilt for a second state's requirements and services.</p>
+          <p class="impact">— add real numbers here: applications processed, certificates issued, active users</p>
+          <div class="tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Meta APIs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dossier">
+        <div>
+          <div class="file-label">File</div>
+          <div class="file-no">INT-MSG-01</div>
+          <div class="file-loc">Internal tool<br>[add company / year]</div>
+        </div>
+        <div>
+          <h3>Internal messaging application</h3>
+          <p class="desc">An internal messaging application used across the company for day-to-day communication between teams, built and maintained end to end.</p>
+          <p class="impact">— add real numbers here: team size, message volume, uptime</p>
+          <div class="tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">SQL</span>
+            <span class="tag">MongoDB</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <h2 class="section-title">Contact</h2>
+      <p>Open to roles where I can keep building software that real people and real institutions depend on. Reach out directly, or find my work below.</p>
+      <div class="contact-links">
+        <a href="mailto:vikramjeet.chawla@pinnacle.in">vikramjeet.chawla@pinnacle.in</a>
+        <a href="#" target="_blank" rel="noopener">github.com/[your-username]</a>
+        <a href="#" target="_blank" rel="noopener">linkedin.com/in/[your-username]</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Vikramjeet Chawla</div>
+</footer>
+
+</body>
+</html>
