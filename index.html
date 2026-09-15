@@ -3,353 +3,377 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vikramjeet Chawla — Software Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Vikramjeet Chawla</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #070a12;
-    --panel: rgba(15, 22, 38, 0.7);
-    --border: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(201, 165, 68, 0.3);
-    --text: #edf1f7;
-    --muted: #8d9bb3;
-    --faint: #5c6a84;
-    --gold: #c9a544;
-    --teal: #45b8ac;
+    --bg: #030712;
+    --card: rgba(15, 23, 42, 0.75);
+    --cyan: #06b6d4;
+    --violet: #8b5cf6;
+    --pink: #ec4899;
+    --text: #f8fafc;
+    --muted: #94a3b8;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior: smooth; }
-
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
     overflow-x: hidden;
   }
 
-  #bg-canvas {
+  #canvas {
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    top:0; left:0; width:100vw; height:100vh;
     z-index: -1;
-    pointer-events: none;
   }
 
-  .wrap {
-    width: 90%;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  header {
-    padding: 24px 0;
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 1px solid var(--border);
-  }
-  header .wrap { display: flex; justify-content: space-between; align-items: center; }
-  .mark { font-family: 'Fraunces', serif; font-size: 20px; color: var(--gold); }
-  nav a {
-    color: var(--muted);
-    text-decoration: none;
-    margin-left: 20px;
-    font-size: 14px;
-    transition: color .3s;
-  }
-  nav a:hover { color: var(--teal); }
-
-  /* Hero Section */
-  .hero {
-    padding: 120px 0 80px;
+  .container {
+    width: 100%;
+    max-width: 650px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 16px;
   }
 
-  .hero .role {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 14px;
-    color: var(--gold);
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    display: inline-block;
-  }
-
-  .hero h1 {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(36px, 6vw, 60px);
-    line-height: 1.1;
-    margin-bottom: 20px;
-  }
-
-  .typed-text {
-    color: var(--teal);
-    border-right: 2px solid var(--teal);
-    animation: blink 0.75s infinite;
-  }
-
-  @keyframes blink { 0%, 100% { border-color: transparent; } 50% { border-color: var(--teal); } }
-
-  .hero p { color: var(--muted); max-width: 550px; font-size: 18px; margin-bottom: 30px; }
-
-  .btn {
-    display: inline-block;
-    padding: 12px 28px;
-    font-size: 14px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all .3s ease;
-    font-family: 'IBM Plex Mono', monospace;
-  }
-  .btn-primary {
-    background: var(--gold);
-    color: #000;
-    font-weight: 600;
-    box-shadow: 0 0 15px rgba(201,165,68,0.3);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 25px rgba(201,165,68,0.6);
-  }
-
-  /* 3D Tilt Dossiers */
-  .work-grid { display: flex; flex-direction: column; gap: 30px; margin-top: 40px; }
-
-  .tilt-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 30px;
-    backdrop-filter: blur(12px);
-    transform-style: preserve-3d;
-    transition: border-color .3s, box-shadow .3s;
+  /* Animated Glowing Border Cards */
+  .glow-card {
     position: relative;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(16px);
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
-  .tilt-card:hover {
-    border-color: var(--border-glow);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(201,165,68,0.15);
+  .glow-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      var(--cyan) 90deg,
+      var(--pink) 180deg,
+      var(--violet) 270deg,
+      transparent 360deg
+    );
+    animation: rotateGlow 6s linear infinite;
+    z-index: -2;
+    opacity: 0.3;
+    transition: opacity 0.3s;
   }
 
-  .tilt-content { transform: translateZ(30px); }
-
-  .tilt-card h3 {
-    font-size: 22px;
-    font-family: 'Fraunces', serif;
-    margin-bottom: 8px;
-    color: var(--text);
+  .glow-card::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: rgba(10, 15, 30, 0.85);
+    border-radius: 14px;
+    z-index: -1;
   }
 
-  .tilt-card p { color: var(--muted); font-size: 15px; margin-bottom: 16px; }
+  .glow-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
 
-  .tags { display: flex; gap: 8px; flex-wrap: wrap; }
-  .tag {
+  .glow-card:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes rotateGlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Header Styles */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
-    padding: 4px 10px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--cyan);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 30%, var(--muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  p.bio {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* Tags */
+  .stack {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    transition: all 0.3s;
+  }
+
+  .tag:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Work Items */
+  .work-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .work-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .work-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--pink);
+    background: rgba(236, 72, 153, 0.1);
+    padding: 2px 8px;
     border-radius: 4px;
-    color: var(--teal);
   }
 
-  /* Reveal Animations */
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.active {
-    opacity: 1;
-    transform: translateY(0);
+  .work-desc {
+    color: var(--muted);
+    font-size: 14px;
   }
 
-  section { padding: 80px 0; }
-  footer { text-align: center; padding: 40px 0; color: var(--faint); font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  /* Action Button */
+  .cta-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4px;
+  }
+
+  .btn {
+    position: relative;
+    padding: 12px 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #000;
+    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+  }
+
+  .btn:hover {
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.8);
+    transform: scale(1.05);
+  }
+
+  .email {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .email:hover { color: var(--cyan); }
 </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<canvas id="canvas"></canvas>
 
-<header>
-  <div class="wrap">
-    <div class="mark">Vikramjeet Chawla</div>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#work">Work</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</header>
+<div class="container">
 
-<main class="wrap">
-
-  <section class="hero">
-    <div class="role">// SOFTWARE DEVELOPER</div>
-    <h1>Building systems for<br><span class="typed-text"></span></h1>
-    <p>Specialized in Node.js, databases, and Meta APIs. I engineer public-service chatbots and internal messaging architectures used by thousands.</p>
-    <a href="#work" class="btn btn-primary">Explore Work</a>
-  </section>
-
-  <section id="about" class="reveal">
-    <h2 style="font-family:'Fraunces'; font-size: 28px; margin-bottom: 16px;">Core Stack</h2>
-    <div class="tags" style="gap: 12px;">
+  <!-- Main Hero Card -->
+  <div class="glow-card">
+    <div class="badge">
+      <span class="pulse-dot"></span> Software Developer
+    </div>
+    <h1>Vikramjeet Chawla</h1>
+    <p class="bio">Engineered government chatbots and scalable messaging pipelines serving millions of users.</p>
+    
+    <div class="stack">
       <span class="tag">Node.js</span>
-      <span class="tag">JavaScript (ES6+)</span>
+      <span class="tag">JavaScript</span>
       <span class="tag">MongoDB</span>
       <span class="tag">SQL</span>
-      <span class="tag">Meta WhatsApp APIs</span>
-      <span class="tag">REST APIs</span>
-      <span class="tag">Git & GitHub</span>
+      <span class="tag">Meta APIs</span>
     </div>
-  </section>
+  </div>
 
-  <section id="work">
-    <h2 style="font-family:'Fraunces'; font-size: 28px; margin-bottom: 24px;" class="reveal">Featured Work</h2>
-    <div class="work-grid">
-
-      <div class="tilt-card reveal">
-        <div class="tilt-content">
-          <h3>Rajasthan Public Services Chatbot</h3>
-          <p>Citizen-facing platform enabling users to apply for government services and retrieve official certificates directly via automated messaging.</p>
-          <div class="tags">
-            <span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Meta APIs</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tilt-card reveal">
-        <div class="tilt-content">
-          <h3>Chhattisgarh Public Services Chatbot</h3>
-          <p>Scaled and re-architected the chatbot engine for Chhattisgarh state services, handling end-to-end user verification and document issuance.</p>
-          <div class="tags">
-            <span class="tag">Node.js</span><span class="tag">SQL</span><span class="tag">Meta APIs</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="tilt-card reveal">
-        <div class="tilt-content">
-          <h3>Enterprise Internal Messaging App</h3>
-          <p>Secure, real-time internal team messaging platform built to manage multi-department communications and workflow operations.</p>
-          <div class="tags">
-            <span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">SQL</span>
-          </div>
-        </div>
-      </div>
-
+  <!-- Project Cards -->
+  <div class="glow-card">
+    <div class="work-header">
+      <span class="work-title">Rajasthan Gov Chatbot</span>
+      <span class="work-tag">PUBLIC SERVICE</span>
     </div>
-  </section>
+    <p class="work-desc">Automated application filing and direct certificate downloads via messaging interface.</p>
+  </div>
 
-  <section id="contact" class="reveal" style="text-align: center;">
-    <h2 style="font-family:'Fraunces'; font-size: 32px; margin-bottom: 12px;">Let's Connect</h2>
-    <p style="color: var(--muted); margin-bottom: 24px;">Open to full-time engineering roles and high-impact projects.</p>
-    <a href="mailto:vikramjeet.chawla@pinnacle.in" class="btn btn-primary">Send Email</a>
-  </section>
+  <div class="glow-card">
+    <div class="work-header">
+      <span class="work-title">Chhattisgarh Gov Chatbot</span>
+      <span class="work-tag">STATE SCALE</span>
+    </div>
+    <p class="work-desc">Architected verification engine for public services distribution pipeline.</p>
+  </div>
 
-</main>
+  <div class="glow-card">
+    <div class="work-header">
+      <span class="work-title">Internal Team App</span>
+      <span class="work-tag">ENTERPRISE</span>
+    </div>
+    <p class="work-desc">Real-time team messaging system managing complex multi-department operations.</p>
+  </div>
 
-<footer>
-  © 2026 Vikramjeet Chawla • Built with HTML, CSS & Vanilla JS
-</footer>
+  <!-- Footer Actions -->
+  <div class="cta-wrapper">
+    <a href="mailto:vikramjeet.chawla@pinnacle.in" class="btn">CONNECT</a>
+    <a href="mailto:vikramjeet.chawla@pinnacle.in" class="email">vikramjeet.chawla@pinnacle.in</a>
+  </div>
+
+</div>
 
 <script>
-  // Canvas Interactive Background
-  const canvas = document.getElementById('bg-canvas');
+  // Dynamic Reactive Interactive Canvas
+  const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
-  let pts = [];
+  let width, height;
+  let mouse = { x: null, y: null, r: 150 };
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
 
   function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
   }
   window.addEventListener('resize', resize);
   resize();
 
-  for(let i=0; i<50; i++) {
-    pts.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5
-    });
+  class Particle {
+    constructor() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.vx = (Math.random() - 0.5) * 1.5;
+      this.vy = (Math.random() - 0.5) * 1.5;
+      this.size = Math.random() * 2 + 1;
+      this.color = Math.random() > 0.5 ? '#06b6d4' : '#8b5cf6';
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if (this.x < 0 || this.x > width) this.vx *= -1;
+      if (this.y < 0 || this.y > height) this.vy *= -1;
+
+      // Mouse interactive push effect
+      if (mouse.x) {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.r) {
+          let force = (mouse.r - dist) / mouse.r;
+          this.x -= (dx / dist) * force * 5;
+          this.y -= (dy / dist) * force * 5;
+        }
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = this.color;
+      ctx.fill();
+    }
   }
 
-  function animateCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#c9a544';
-    ctx.strokeStyle = 'rgba(69, 184, 172, 0.05)';
+  const particles = Array.from({ length: 65 }, () => new Particle());
 
-    pts.forEach((p, index) => {
-      p.x += p.vx; p.y += p.vy;
-      if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-      if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2);
-      ctx.fill();
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update();
+      particles[i].draw();
 
-      for(let j=index+1; j<pts.length; j++) {
-        let p2 = pts[j];
-        let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-        if(dist < 120) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 120) {
           ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(139, 92, 246, ${1 - dist / 120})`;
+          ctx.lineWidth = 0.6;
           ctx.stroke();
         }
       }
-    });
-    requestAnimationFrame(animateCanvas);
-  }
-  animateCanvas();
-
-  // Typing Animation
-  const words = ["entire governments.", "millions of citizens.", "real-world scale."];
-  let wordIdx = 0, charIdx = 0, isDeleting = false;
-  const typedEl = document.querySelector('.typed-text');
-
-  function type() {
-    const current = words[wordIdx];
-    typedEl.textContent = current.substring(0, charIdx);
-
-    if(!isDeleting && charIdx < current.length) { charIdx++; setTimeout(type, 100); }
-    else if(isDeleting && charIdx > 0) { charIdx--; setTimeout(type, 50); }
-    else {
-      isDeleting = !isDeleting;
-      if(!isDeleting) wordIdx = (wordIdx + 1) % words.length;
-      setTimeout(type, isDeleting ? 1200 : 500);
     }
+    requestAnimationFrame(animate);
   }
-  type();
-
-  // 3D Tilt Effect on Cards
-  document.querySelectorAll('.tilt-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width/2;
-      const y = e.clientY - rect.top - rect.height/2;
-      card.style.transform = `perspective(1000px) rotateX(${-y/15}deg) rotateY(${x/15}deg)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-    });
-  });
-
-  // Scroll Reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting) entry.target.classList.add('active');
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  animate();
 </script>
+
 </body>
 </html>
